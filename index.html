@@ -1,0 +1,1492 @@
+```html
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>4 x 40 B-Day-Bash - Partybeiträge</title>
+    <meta content="Partybeiträge für die 4 x 40 B-Day-Bash Party am 01.-03.08.2025 im Anglerheim Jena" name="description"/>
+    <meta content="Birthday Party, Partybeiträge, Geburtstag, Party, Jena" name="keywords"/>
+
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Orbitron', monospace;
+            background: linear-gradient(135deg, #1a0033 0%, #2d1b4e 50%, #4a0e4e 100%);
+            min-height: 100vh;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: #ffffff;
+            border-radius: 50%;
+            animation: twinkle 2s infinite alternate;
+        }
+
+        @keyframes twinkle {
+            0% { opacity: 0.3; }
+            100% { opacity: 1; }
+        }
+
+        .neon-lines {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .neon-line {
+            position: absolute;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #ff00ff, transparent);
+            animation: neon-sweep 4s linear infinite;
+        }
+
+        @keyframes neon-sweep {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100vw); }
+        }
+
+        .synthwave-mountains {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 30%;
+            pointer-events: none;
+            z-index: -1;
+            opacity: 0.4;
+        }
+
+        .mountain-layer {
+            position: absolute;
+            bottom: 0;
+            width: 120%;
+            height: 100%;
+        }
+
+        .mountain-1 {
+            background: linear-gradient(to top, rgba(255, 0, 255, 0.1), rgba(255, 0, 255, 0.6));
+            clip-path: polygon(0% 100%, 15% 40%, 25% 50%, 40% 25%, 55% 45%, 70% 20%, 85% 35%, 100% 15%, 100% 100%);
+            animation: mountain-drift 60s linear infinite;
+            border-top: 2px solid rgba(255, 0, 255, 0.8);
+        }
+
+        .mountain-2 {
+            background: linear-gradient(to top, rgba(0, 255, 255, 0.1), rgba(0, 255, 255, 0.5));
+            clip-path: polygon(0% 100%, 20% 55%, 35% 30%, 50% 45%, 65% 25%, 80% 40%, 95% 20%, 100% 100%);
+            animation: mountain-drift 80s linear infinite reverse;
+            border-top: 2px solid rgba(0, 255, 255, 0.7);
+        }
+
+        .mountain-3 {
+            background: linear-gradient(to top, rgba(255, 255, 0, 0.1), rgba(255, 255, 0, 0.4));
+            clip-path: polygon(0% 100%, 10% 65%, 30% 50%, 45% 55%, 60% 40%, 75% 50%, 90% 45%, 100% 100%);
+            animation: mountain-drift 100s linear infinite;
+            border-top: 2px solid rgba(255, 255, 0, 0.6);
+        }
+
+        @keyframes mountain-drift {
+            0% { transform: translateX(-10%); }
+            100% { transform: translateX(10%); }
+        }
+
+        .mountain-layer {
+            position: absolute;
+            bottom: 0;
+            width: 120%;
+            height: 100%;
+        }
+
+        .mountain-1 {
+            background: linear-gradient(to top, transparent, rgba(255, 0, 255, 0.3));
+            clip-path: polygon(0% 100%, 15% 60%, 25% 70%, 40% 45%, 55% 65%, 70% 40%, 85% 55%, 100% 35%, 100% 100%);
+            animation: mountain-drift 60s linear infinite;
+        }
+
+        .mountain-2 {
+            background: linear-gradient(to top, transparent, rgba(0, 255, 255, 0.25));
+            clip-path: polygon(0% 100%, 20% 75%, 35% 50%, 50% 65%, 65% 45%, 80% 60%, 95% 40%, 100% 100%);
+            animation: mountain-drift 80s linear infinite reverse;
+        }
+
+        .mountain-3 {
+            background: linear-gradient(to top, transparent, rgba(255, 255, 0, 0.2));
+            clip-path: polygon(0% 100%, 10% 85%, 30% 70%, 45% 75%, 60% 60%, 75% 70%, 90% 65%, 100% 100%);
+            animation: mountain-drift 100s linear infinite;
+        }
+
+        @keyframes mountain-drift {
+            0% { transform: translateX(-10%); }
+            100% { transform: translateX(10%); }
+        }
+
+        .laser-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -2;
+            overflow: hidden;
+        }
+
+        .laser-beam {
+            position: absolute;
+            height: 1px;
+            width: 100vw;
+            background: linear-gradient(90deg, transparent 0%, rgba(0, 255, 255, 0.1) 20%, rgba(255, 0, 255, 0.15) 50%, rgba(0, 255, 255, 0.1) 80%, transparent 100%);
+            animation: laser-move-horizontal 8s linear infinite;
+            opacity: 0.4;
+        }
+
+        .laser-beam:nth-child(2) {
+            animation-delay: -2s;
+            background: linear-gradient(90deg, transparent 0%, rgba(255, 0, 255, 0.1) 20%, rgba(0, 255, 255, 0.15) 50%, rgba(255, 0, 255, 0.1) 80%, transparent 100%);
+        }
+
+        .laser-beam:nth-child(3) {
+            animation-delay: -4s;
+            animation-duration: 10s;
+        }
+
+        .laser-beam:nth-child(4) {
+            animation-delay: -6s;
+            animation-duration: 12s;
+            background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 0, 0.08) 20%, rgba(255, 0, 255, 0.12) 50%, rgba(255, 255, 0, 0.08) 80%, transparent 100%);
+        }
+
+        @keyframes laser-move-horizontal {
+            0% { top: -10px; transform: translateY(0); }
+            25% { top: 25%; transform: translateY(5px); }
+            50% { top: 50%; transform: translateY(-5px); }
+            75% { top: 75%; transform: translateY(3px); }
+            100% { top: calc(100% + 10px); transform: translateY(0); }
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 30px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 2px solid #ff00ff;
+            border-radius: 15px;
+            box-shadow: 0 0 30px rgba(255, 0, 255, 0.3);
+        }
+        
+        .title {
+            font-size: clamp(1.8rem, 6vw, 3rem);
+            font-weight: 900;
+            color: #ff00ff;
+            text-shadow: 0 0 20px #ff00ff;
+            margin-bottom: 10px;
+            letter-spacing: 3px;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            line-height: 1.2;
+        }
+        
+        .date {
+            font-size: clamp(1rem, 3vw, 1.5rem);
+            color: #00ffff;
+            text-shadow: 0 0 10px #00ffff;
+            margin-bottom: 20px;
+            letter-spacing: 2px;
+        }
+        
+        .subtitle {
+            font-size: clamp(0.9rem, 2.5vw, 1.2rem);
+            color: #ffffff;
+            opacity: 0.8;
+        }
+        
+        .items-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+        
+        .section-title {
+            font-size: clamp(1.5rem, 4vw, 2rem);
+            font-weight: 900;
+            color: #ff00ff;
+            text-shadow: 0 0 15px rgba(255, 0, 255, 0.8);
+            text-align: center;
+            margin: 40px 0 30px;
+            letter-spacing: 2px;
+        }
+
+        .section-title.highlighted-plus {
+            font-size: clamp(1.8rem, 4.5vw, 2.5rem);
+            color: #ffff00;
+            text-shadow: 0 0 20px #ffff00, 0 0 30px rgba(255, 255, 0, 0.8);
+            animation: pulse-plus 1.5s infinite alternate;
+        }
+
+        @keyframes pulse-plus {
+            0% { transform: scale(1); opacity: 1; }
+            100% { transform: scale(1.05); opacity: 0.9; }
+        }
+
+        .section-note {
+            text-align: center;
+            font-size: clamp(0.9rem, 2.5vw, 1.2rem);
+            color: #ffff00; /* Gelbe Schriftfarbe */
+            text-shadow: 0 0 10px #ffff00; /* Leichter gelber Leuchteffekt */
+            margin-top: 20px; /* Um näher an den Titel zu rücken */
+            margin-bottom: 30px; /* Abstand zum Grid */
+            font-weight: 700;
+            animation: neon-flicker 1.5s infinite alternate; /* Blinkeffekt */
+        }
+
+        @keyframes neon-flicker {
+            0%, 100% { opacity: 1; text-shadow: 0 0 10px #ffff00; }
+            50% { opacity: 0.8; text-shadow: 0 0 15px #ffff00, 0 0 20px rgba(255, 255, 0, 0.5); }
+        }
+        
+        .additional-section {
+            margin-top: 50px;
+        }
+        
+        .add-item-card {
+            background: rgba(0, 0, 0, 0.2);
+            border: 2px dashed #666;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: visible;
+        }
+        
+        .add-item-card:hover {
+            border-color: #ff00ff;
+            box-shadow: 0 0 20px rgba(255, 0, 255, 0.1);
+        }
+        
+        .add-item-title {
+            color: #ffff00;
+            font-size: 1.5rem;
+            text-shadow: 0 0 15px #ffff00;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #ff00ff;
+            margin-bottom: 15px;
+            text-shadow: 0 0 10px rgba(255, 0, 255, 0.5);
+        }
+        
+        .add-item-controls {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .add-item-input {
+            flex: 1;
+            min-width: 200px;
+            padding: 10px;
+            border: 2px solid #333;
+            border-radius: 5px;
+            background: rgba(0, 0, 0, 0.7);
+            color: #ffffff;
+            font-family: 'Orbitron', monospace;
+            font-size: 1rem;
+        }
+        
+        .add-item-input:focus {
+            outline: none;
+            border-color: #ff00ff;
+            box-shadow: 0 0 10px rgba(255, 0, 255, 0.3);
+        }
+        
+        .btn-add {
+            font-size: 1.1rem;
+            font-weight: 900;
+            box-shadow: 0 0 20px rgba(255, 0, 255, 0.6);
+            background: linear-gradient(45deg, #ff00ff, #00ffff);
+            color: #000;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            font-family: 'Orbitron', monospace;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+        }
+        
+        .btn-add:hover {
+            box-shadow: 0 0 15px rgba(255, 0, 255, 0.5);
+            transform: translateY(-2px);
+        }
+        
+        .additional-items-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .additional-item-card {
+            background: rgba(0, 0, 0, 0.3);
+            border: 2px solid #666;
+            border-radius: 10px;
+            padding: 20px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: visible;
+        }
+        
+        .additional-item-card:hover {
+            border-color: #00ffff;
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.1);
+        }
+        
+        .additional-item-name {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #00ffff;
+            margin-bottom: 10px;
+            text-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
+        }
+        
+        .additional-note {
+            font-size: 0.8rem;
+            color: #888;
+            font-style: italic;
+            margin-bottom: 15px;
+        }
+        
+        .item-card {
+            background: rgba(0, 0, 0, 0.4);
+            border: 2px solid #333;
+            border-radius: 10px;
+            padding: 20px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: visible;
+        }
+        
+        .item-card:hover {
+            border-color: #ff00ff;
+            box-shadow: 0 0 20px rgba(255, 0, 255, 0.2);
+        }
+        
+        .item-card.taken {
+            border-color: #00ff00;
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0.2);
+        }
+        
+        .item-name {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 10px;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+        }
+
+        .item-counter {
+            font-size: 0.9rem;
+            color: #00ffff;
+            margin-bottom: 15px;
+            text-shadow: 0 0 5px rgba(0, 255, 255, 0.5);
+        }
+        
+        .persons-list {
+            margin-bottom: 15px;
+            max-height: 150px;
+            overflow-y: auto;
+        }
+        
+        .person-entry {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 12px;
+            margin-bottom: 5px;
+            background: rgba(0, 255, 0, 0.1);
+            border: 1px solid rgba(0, 255, 0, 0.3);
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+        
+        .person-entry:hover {
+            background: rgba(0, 255, 0, 0.2);
+            border-color: rgba(0, 255, 0, 0.5);
+        }
+        
+        .person-name {
+            color: #00ff00;
+            font-weight: 600;
+            text-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
+        }
+        
+        .btn-small {
+            padding: 4px 8px;
+            border: none;
+            border-radius: 3px;
+            font-family: 'Orbitron', monospace;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.8rem;
+        }
+        
+        .btn-small.btn-unregister {
+            background: linear-gradient(45deg, #ff4444, #ff6666);
+            color: #fff;
+        }
+        
+        .btn-small.btn-unregister:hover {
+            background: linear-gradient(45deg, #ff6666, #ff8888);
+            transform: scale(1.1);
+        }
+        
+        .complete-message {
+            color: #00ff00;
+            font-weight: 700;
+            font-size: 1.1rem;
+            text-align: center;
+            text-shadow: 0 0 15px rgba(0, 255, 0, 0.8);
+            animation: neon-pulse 2s ease-in-out infinite;
+        }
+        
+        .item-controls {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        
+        .name-input {
+            flex: 1;
+            padding: 10px;
+            border: 2px solid #333;
+            border-radius: 5px;
+            background: rgba(0, 0, 0, 0.7);
+            color: #ffffff;
+            font-family: 'Orbitron', monospace;
+            font-size: 1rem;
+            min-width: 150px;
+        }
+        
+        .name-input:focus {
+            outline: none;
+            border-color: #ff00ff;
+            box-shadow: 0 0 10px rgba(255, 0, 255, 0.3);
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            font-family: 'Orbitron', monospace;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+        }
+        
+        .btn-take {
+            background: linear-gradient(45deg, #ff00ff, #00ffff);
+            color: #000;
+        }
+        
+        .btn-take:hover {
+            box-shadow: 0 0 15px rgba(255, 0, 255, 0.5);
+            transform: translateY(-2px);
+        }
+        
+        .btn-release {
+            background: linear-gradient(45deg, #ff4444, #ff6666);
+            color: #fff;
+        }
+        
+        .btn-release:hover {
+            box-shadow: 0 0 15px rgba(255, 68, 68, 0.5);
+            transform: translateY(-2px);
+        }
+        
+        .btn-unregister {
+            background: linear-gradient(45deg, #ffaa00, #ff6600);
+            color: #fff;
+            margin-left: 10px;
+        }
+        
+        .btn-unregister:hover {
+            box-shadow: 0 0 15px rgba(255, 170, 0, 0.5);
+            transform: translateY(-2px);
+        }
+        
+        .taken-by {
+            color: #00ff00;
+            font-weight: 700;
+            text-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
+            flex: 1;
+        }
+        
+        .taken-controls {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        
+        .thank-you-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            transition: opacity 0.3s ease;
+        }
+        
+        .thank-you-overlay.show {
+            display: flex;
+            opacity: 1;
+            pointer-events: all;
+        }
+        
+        .thank-you-content {
+            text-align: center;
+            position: relative;
+        }
+        
+        .thank-you-text {
+            font-size: clamp(2rem, 8vw, 4rem);
+            font-weight: 900;
+            color: #ff00ff;
+            text-shadow: 0 0 30px #ff00ff, 0 0 50px #00ffff;
+            margin-bottom: 20px;
+            animation: glitch 0.5s ease-in-out infinite alternate;
+            padding: 0 10px;
+            white-space: normal;
+            word-break: break-word;
+        }
+        
+        .thank-you-subtext {
+            font-size: clamp(1rem, 4vw, 1.5rem);
+            color: #00ffff;
+            text-shadow: 0 0 20px #00ffff, 0 0 40px #ff00ff;
+            animation: neon-pulse 1s ease-in-out infinite;
+            padding: 0 10px;
+            white-space: normal;
+            word-break: break-word;
+        }
+        
+        .radial-laser {
+            position: absolute;
+            width: 2px;
+            height: 200px;
+            background: linear-gradient(to bottom, transparent, #ff00ff, #00ffff, transparent);
+            animation: radial-laser-spin 2s linear infinite;
+            opacity: 0.7;
+        }
+
+        @keyframes radial-laser-spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .retro-grid {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 800px;
+            height: 600px;
+            background: linear-gradient(90deg, transparent 49%, #ff00ff 50%, #ff00ff 51%, transparent 52%), linear-gradient(0deg, transparent 49%, #ff00ff 50%, #ff00ff 51%, transparent 52%);
+            background-size: 40px 40px;
+            opacity: 0.3;
+            animation: grid-move 2s linear infinite;
+            z-index: -1;
+        }
+        
+        .laser-lines {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: visible;
+            z-index: -1;
+        }
+        
+        .laser-line {
+            position: absolute;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #00ffff, transparent);
+            animation: laser-sweep 1s linear infinite;
+            box-shadow: 0 0 10px #00ffff;
+        }
+        
+        @keyframes glitch {
+            0% { transform: translateX(0); text-shadow: 0 0 30px #ff00ff; }
+            25% { transform: translateX(-5px); text-shadow: -5px 0 30px #ff00ff, 5px 0 30px #00ffff; }
+            50% { transform: translateX(5px); text-shadow: 5px 0 30px #ff00ff, -5px 0 30px #00ffff; }
+            75% { transform: translateX(-2px); text-shadow: -2px 0 30px #ff00ff, 2px 0 30px #00ffff; }
+            100% { transform: translateX(0); text-shadow: 0 0 30px #ff00ff; }
+        }
+        
+        @keyframes neon-pulse {
+            0%, 100% { text-shadow: 0 0 20px #00ffff; }
+            50% { text-shadow: 0 0 40px #00ffff, 0 0 60px #00ffff; }
+        }
+        
+        @keyframes grid-move {
+            0% { transform: translate(-50%, -50%); }
+            100% { transform: translate(-50%, -70%); }
+        }
+        
+        @keyframes laser-sweep {
+            0% { left: -100%; top: 20%; }
+            100% { left: 100%; top: 80%; }
+        }
+        
+        .drive-status {
+            text-align: center;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            border: 2px solid #333;
+            display: none;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .drive-status.connected {
+            border-color: #00ff00;
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0.2);
+        }
+        
+        .drive-status.disconnected {
+            border-color: #ff4444;
+            box-shadow: 0 0 20px rgba(255, 68, 68, 0.2);
+        }
+        
+        .status-text {
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        
+        .connect-btn {
+            background: linear-gradient(45deg, #00ff00, #00ffff);
+            color: #000;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            font-family: 'Orbitron', monospace;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+        }
+        
+        .connect-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 15px rgba(0, 255, 0, 0.5);
+        }
+        
+        .export-section {
+            text-align: center;
+            margin-bottom: 30px;
+            display: none;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .export-btn {
+            background: linear-gradient(45deg, #00ffff, #ff00ff);
+            color: #000;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 10px;
+            font-family: 'Orbitron', monospace;
+            font-weight: 700;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            margin: 0 10px;
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
+        }
+        
+        .export-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 0 30px rgba(0, 255, 255, 0.5);
+        }
+        
+        .export-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .admin-section {
+            text-align: center;
+            margin-top: 40px;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+            border: 2px solid #333;
+            position: relative;
+            overflow: visible;
+        }
+        
+        .admin-login {
+            display: block;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .admin-controls {
+            display: none;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .admin-login-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent, rgba(255, 0, 255, 0.1), transparent);
+            animation: admin-bg-pulse 3s ease-in-out infinite;
+            z-index: 1;
+        }
+        
+        .admin-title {
+            color: #ff00ff;
+            font-size: clamp(1.3rem, 3vw, 1.8rem);
+            font-weight: 900;
+            margin-bottom: 30px;
+            text-shadow: 0 0 20px rgba(255, 0, 255, 0.8);
+            animation: admin-title-glow 2s ease-in-out infinite alternate;
+            letter-spacing: 2px;
+        }
+        
+        .admin-input-container {
+            position: relative;
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+        
+        .admin-input {
+            padding: 15px 20px;
+            border: 2px solid #333;
+            border-radius: 10px;
+            background: rgba(0, 0, 0, 0.8);
+            color: #ffffff;
+            font-family: 'Orbitron', monospace;
+            font-size: 1.1rem;
+            width: 300px;
+            text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .admin-input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+            font-style: italic;
+        }
+        
+        .admin-input:focus {
+            outline: none;
+            border-color: #ff00ff;
+            box-shadow: 0 0 25px rgba(255, 0, 255, 0.5);
+            background: rgba(0, 0, 0, 0.9);
+            transform: scale(1.05);
+        }
+        
+        .admin-input-glow {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 2px solid transparent;
+            border-radius: 10px;
+            background: linear-gradient(45deg, #ff00ff, #00ffff, #ff00ff);
+            background-size: 200% 200%;
+            animation: admin-input-border 3s ease-in-out infinite;
+            z-index: 1;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .admin-input:focus + .admin-input-glow {
+            opacity: 1;
+        }
+        
+        .admin-btn {
+            background: linear-gradient(45deg, #ff00ff, #00ffff);
+            color: #000;
+            padding: 15px 35px;
+            border: none;
+            border-radius: 10px;
+            font-family: 'Orbitron', monospace;
+            font-weight: 900;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            font-size: 1.1rem;
+            letter-spacing: 1px;
+            box-shadow: 0 0 20px rgba(255, 0, 255, 0.3);
+        }
+        
+        .admin-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 0 35px rgba(255, 0, 255, 0.7);
+            background: linear-gradient(45deg, #00ffff, #ff00ff);
+        }
+        
+        .admin-panel {
+            margin-top: 20px;
+            padding: 25px;
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 15px;
+            border: 2px solid #00ff00;
+            box-shadow: 0 0 30px rgba(0, 255, 0, 0.3);
+            position: relative;
+            overflow: visible;
+        }
+        
+        .admin-panel::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent, rgba(0, 255, 0, 0.05), transparent);
+            animation: admin-panel-pulse 4s ease-in-out infinite;
+        }
+        
+        .admin-panel h3 {
+            color: #00ff00;
+            margin-bottom: 20px;
+            text-shadow: 0 0 15px rgba(0, 255, 0, 0.8);
+            font-size: 1.5rem;
+            font-weight: 900;
+            letter-spacing: 1px;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .logout-btn {
+            background: linear-gradient(45deg, #ff4444, #ff6666);
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            font-family: 'Orbitron', monospace;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            float: right;
+            box-shadow: 0 0 15px rgba(255, 68, 68, 0.3);
+            position: relative;
+            z-index: 2;
+        }
+        
+        .logout-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 25px rgba(255, 68, 68, 0.6);
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            border: 2px solid #333;
+        }
+        
+        .footer h3 {
+            color: #ff00ff;
+            margin-bottom: 10px;
+            text-shadow: 0 0 10px rgba(255, 0, 255, 0.5);
+        }
+
+        @keyframes admin-bg-pulse {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 0.7; }
+        }
+        @keyframes admin-title-glow {
+            0% { text-shadow: 0 0 20px rgba(255, 0, 255, 0.8); }
+            100% { text-shadow: 0 0 30px rgba(255, 0, 255, 1), 0 0 40px rgba(0, 255, 255, 0.5); }
+        }
+        @keyframes admin-input-border {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        @keyframes admin-panel-pulse {
+            0%, 100% { opacity: 0.1; }
+            50% { opacity: 0.3; }
+        }
+        @media (max-width: 768px) {
+            .title { font-size: clamp(2rem, 6vw, 2.5rem); letter-spacing: 1px; }
+            .header { padding: 35px; }
+            .date { font-size: clamp(1.1rem, 3.5vw, 1.6rem); }
+            .subtitle { font-size: clamp(1rem, 2.8vw, 1.3rem); }
+            .section-title { font-size: clamp(1.4rem, 4.5vw, 2rem); margin: 30px 0 20px; }
+            .items-grid { grid-template-columns: 1fr; }
+            .additional-items-grid { grid-template-columns: 1fr; }
+            .item-controls { flex-direction: column; gap: 10px; }
+            .add-item-controls { flex-direction: column; gap: 10px; }
+            .add-item-input { min-width: unset; width: 100%; }
+            .taken-controls { flex-direction: column; gap: 10px; align-items: stretch; }
+            .name-input { width: 100%; }
+            .person-entry { padding: 6px 10px; }
+            .persons-list { max-height: 120px; }
+            .thank-you-text { font-size: clamp(2rem, 8vw, 4rem); }
+            .export-btn { display: block; margin: 10px auto; width: 80%; }
+            .admin-input { width: 100%; margin-bottom: 20px; max-width: 300px; }
+            .admin-input-container { width: 100%; max-width: 300px; margin: 0 auto 20px; }
+            .admin-btn { width: 100%; max-width: 300px; }
+            .admin-title { font-size: clamp(1.2rem, 2.5vw, 1.5rem); }
+            .laser-beam { height: clamp(0.5px, 1vw, 1px); }
+        }
+        @media (max-width: 480px) {
+            .title { font-size: clamp(1.8rem, 5.5vw, 2rem); letter-spacing: 0px; }
+            .date { font-size: clamp(1rem, 3vw, 1.3rem); }
+            .subtitle { font-size: clamp(0.9rem, 2.5vw, 1.1rem); }
+            .section-title { font-size: clamp(1.4rem, 4vw, 1.8rem); margin: 25px 0 15px; }
+            .container { padding: 15px; }
+            .header { padding: 25px; }
+            .admin-section { padding: 15px; }
+            .admin-panel { padding: 15px; }
+            .admin-title { font-size: clamp(1rem, 2vw, 1.3rem); margin-bottom: 25px; }
+            .admin-input { width: 100%; max-width: 280px; font-size: 1rem; padding: 12px 15px; }
+            .admin-btn { width: 100%; max-width: 280px; padding: 12px 25px; font-size: 1rem; }
+            .logout-btn { float: none; display: block; margin: 0 auto 15px; width: 100%; max-width: 200px; }
+            .person-entry { padding: 5px 8px; font-size: 0.9rem; }
+            .persons-list { max-height: 100px; }
+            .add-item-card { padding: 15px; }
+            .additional-item-card { padding: 15px; }
+            .laser-beam { height: clamp(0.3px, 0.8vw, 0.5px); }
+        }
+    </style>
+</head>
+<body>
+    <div class="stars"></div>
+    <div class="neon-lines"></div>
+	<div class="synthwave-mountains">
+        <div class="mountain-layer mountain-1"></div>
+        <div class="mountain-layer mountain-2"></div>
+        <div class="mountain-layer mountain-3"></div>
+    </div>
+    <div class="laser-background">
+        <div class="laser-beam"></div>
+        <div class="laser-beam"></div>
+        <div class="laser-beam"></div>
+        <div class="laser-beam"></div>
+    </div>
+
+    <div class="container">
+        <div class="header">
+            <h1 class="title">4 x 40 B-DAY-BASH</h1>
+            <div class="date">01. - 03. 08. 2025</div>
+            <div class="subtitle">Partybeiträge • Anglerheim Jena</div>
+            <div class="drive-status" style="margin-top: 15px; font-size: 0.9rem; opacity: 0.8;">
+                <span class="status-text">Lokaler Modus - Funktioniert ohne Internet</span>
+                <br/>
+                <button class="connect-btn" onclick="connectToFirebase()">👆 Für Synchronisation: Admin → "🔗 Test API" klicken</button>
+            </div>
+        </div>
+
+        <div class="section-title">🎯 Benötigte Partybeiträge</div>
+        <div class="section-note">📝 Hinweis: Du kannst ganz unten auch eigene Partybeiträge vorschlagen! 👇</div>
+        <div class="items-grid" id="itemsGrid"></div>
+
+        <div class="additional-section">
+            <div class="section-title highlighted-plus">➕ Weitere Partybeiträge</div>
+            <div class="additional-items-grid" id="additionalItemsGrid"></div>
+            <div class="add-item-card">
+                <div class="add-item-title">Neuen Partybeitrag vorschlagen</div>
+                <div class="additional-note">Hier kannst du weitere Dinge eintragen, die du zur Party beitragen möchtest</div>
+                <div class="add-item-controls">
+                    <input class="add-item-input" id="newItemInput" placeholder="z.B. Chips, Getränke, Deko..." type="text"/>
+                    <button class="btn btn-add" onclick="addNewItem()">Hinzufügen</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="thank-you-overlay" id="thankYouOverlay">
+            <div class="thank-you-content">
+                <div class="retro-grid"></div>
+                <div class="laser-lines">
+                    <div class="laser-line"></div>
+                </div>
+                <div class="thank-you-text" id="thankYouText"></div>
+                <div class="thank-you-subtext" id="thankYouSubtext"></div>
+            </div>
+        </div>
+
+        <div class="admin-section">
+            <div class="admin-login-bg"></div>
+            <div class="admin-login" id="adminLogin">
+                <div class="admin-title">🔐 ADMIN ACCESS</div>
+                <div class="admin-input-container">
+                    <input class="admin-input" id="adminPassword" placeholder="Enter Password" type="password" onkeypress="if(event.key === 'Enter') adminLogin()"/>
+                    <div class="admin-input-glow"></div>
+                </div>
+                <br/>
+                <button class="admin-btn" onclick="adminLogin()">Initialize</button>
+            </div>
+
+            <div class="admin-controls" id="adminControls" style="display: none;">
+                <button class="logout-btn" onclick="adminLogout()">Logout</button>
+                <div class="admin-panel">
+                    <h3>⚙️ SYSTEM CONTROL</h3>
+                    <div class="export-section" id="exportSection">
+                        <button class="export-btn" onclick="exportToCSV()">📊 CSV Export</button>
+                        <button class="export-btn" id="testApiBtn">🔗 Test API</button>
+                        <button class="export-btn" onclick="generateNewBin()">🆕 Neuer BIN</button>
+                        <button class="export-btn" onclick="exportToExcel()">📑 Excel Export</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <h3>4 x 40 B-Day-Bash</h3>
+            <p>© 2025 All rights reserved.</p>
+        </div>
+    </div>
+
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyCCGxVJWfXyMNfl3oQt2OMxjcBw0jkIGn8",
+            authDomain: "x40-party.firebaseapp.com",
+            databaseURL: "https://x40-party-default-rtdb.europe-west1.firebasedatabase.app",
+            projectId: "x40-party",
+            storageBucket: "x40-party.firebasestorage.app",
+            messagingSenderId: "649437136404",
+            appId: "1:649437136404:web:fbb5ed94e4edf0e939c901"
+        };
+
+        let app = null;
+        let database = null;
+        let isAdminLoggedIn = false;
+        let data = {
+            items: [],
+            additionalItems: []
+        };
+
+        // Firebase initialisieren und Daten laden
+        function initializeFirebase() {
+            app = firebase.initializeApp(firebaseConfig);
+            database = app.database();
+            const dbRef = database.ref('partyData');
+            dbRef.on('value', (snapshot) => {
+                const firebaseData = snapshot.val();
+                if (firebaseData) {
+                    data.items = Object.values(firebaseData.items || {}).map(item => {
+                        if (!item.hasOwnProperty('persons') || !Array.isArray(item.persons)) {
+                            item.persons = [];
+                        }
+                        return item;
+                    });
+                    data.additionalItems = Object.values(firebaseData.additionalItems || {}).map(item => {
+                        if (!item.hasOwnProperty('persons') || !Array.isArray(item.persons)) {
+                            item.persons = [];
+                        }
+                        return item;
+                    });
+                    console.log('Daten aus Firebase geladen:', data);
+                } else {
+                    saveData();
+                }
+                updateDisplay();
+            }, (error) => {
+                console.error('Fehler beim Laden der Daten:', error);
+                updateDisplay();
+            });
+        }
+
+        // Daten speichern
+        function saveData() {
+            if (database) {
+                database.ref('partyData').set(data)
+                    .then(() => console.log('Daten erfolgreich gespeichert'))
+                    .catch(error => console.error('Fehler beim Speichern:', error));
+            }
+        }
+
+        // Anzeige aktualisieren
+        function updateDisplay() {
+            createItemCards();
+            createAdditionalItemCards();
+        }
+
+        // Item-Karten erstellen
+        function createItemCards() {
+            const itemsGrid = document.getElementById('itemsGrid');
+            itemsGrid.innerHTML = '';
+            data.items.forEach(item => {
+                if (!Array.isArray(item.persons)) {
+                    item.persons = [];
+                }
+                const card = document.createElement('div');
+                card.className = 'item-card' + (item.persons.length > 0 ? ' taken' : '');
+                card.innerHTML = `
+                    <div class="item-name">${item.name || ''}</div>
+                    ${item.persons.length > 0 ? `<div class="item-counter">${item.persons.length} Person(en)</div>` : ''}
+                    <div class="persons-list">
+                        ${item.persons.map(person => `
+                            <div class="person-entry">
+                                <span class="person-name">${person || ''}</span>
+                                <button class="btn-small btn-unregister" onclick="unregisterPerson('${item.id || ''}', '${person || ''}', false)">X</button>
+                            </div>
+                        `).join('')}
+                    </div>
+                    <div class="item-controls">
+                        <input type="text" class="name-input" id="input-${item.id || ''}" placeholder="Dein Name" onkeypress="if(event.key === 'Enter') registerPerson('${item.id || ''}', false)"/>
+                        <button class="btn btn-take" onclick="registerPerson('${item.id || ''}', false)">Eintragen</button>
+                    </div>
+                `;
+                itemsGrid.appendChild(card);
+            });
+        }
+
+        // Zusätzliche Item-Karten erstellen
+        function createAdditionalItemCards() {
+            const additionalItemsGrid = document.getElementById('additionalItemsGrid');
+            additionalItemsGrid.innerHTML = '';
+            // Sortiere nach ID (Timestamp), um neueste oben zu zeigen, robust gegen alte IDs
+            const getTimestamp = id => id.includes('_') ? parseInt(id.split('_')[1]) || 0 : 0;
+            const sortedItems = data.additionalItems.slice().sort((a, b) => getTimestamp(b.id) - getTimestamp(a.id));
+            sortedItems.forEach(item => {
+                if (!Array.isArray(item.persons)) {
+                    item.persons = [];
+                }
+                const card = document.createElement('div');
+                card.className = 'additional-item-card';
+                card.innerHTML = `
+                    <div class="additional-item-name">${item.name || ''}</div>
+                    <div class="persons-list">
+                        ${item.persons.map(person => `
+                            <div class="person-entry">
+                                <span class="person-name">${person || ''}</span>
+                                <button class="btn-small btn-unregister" onclick="unregisterPerson('${item.id || ''}', '${person || ''}', true)">X</button>
+                            </div>
+                        `).join('')}
+                    </div>
+                    <div class="item-controls">
+                        <input type="text" class="name-input" id="input-${item.id || ''}" placeholder="Dein Name" onkeypress="if(event.key === 'Enter') registerPerson('${item.id || ''}', true)"/>
+                        <button class="btn btn-take" onclick="registerPerson('${item.id || ''}', true)">Eintragen</button>
+                    </div>
+                `;
+                additionalItemsGrid.appendChild(card);
+            });
+        }
+
+        // Person eintragen
+        function registerPerson(itemId, isAdditional) {
+            const input = document.getElementById(`input-${itemId}`);
+            const name = input.value.trim();
+            if (name && !isAdminLoggedIn) {
+                const items = isAdditional ? data.additionalItems : data.items;
+                const item = items.find(i => i.id === itemId);
+                if (item && !item.persons.includes(name)) {
+                    if (!Array.isArray(item.persons)) {
+                        item.persons = [];
+                    }
+                    item.persons.push(name);
+                    input.value = '';
+                    saveData();
+                    showThankYouEffect();
+                }
+            }
+        }
+
+        // Person austragen
+        function unregisterPerson(itemId, personName, isAdditional) {
+            if (!isAdminLoggedIn) {
+                const items = isAdditional ? data.additionalItems : data.items;
+                const item = items.find(i => i.id === itemId);
+                if (item && Array.isArray(item.persons)) {
+                    item.persons = item.persons.filter(p => p !== personName);
+                    if (item.persons.length === 0 && items === data.additionalItems && !data.items.some(i => i.id === item.id)) {
+                        const index = items.findIndex(i => i.id === itemId);
+                        if (index !== -1) items.splice(index, 1);
+                    }
+                    saveData();
+                    showGoodbyeEffect();
+                }
+            }
+        }
+
+        // Neues Item hinzufügen
+        function addNewItem() {
+            const input = document.getElementById('newItemInput');
+            const name = input.value.trim();
+            if (name && !isAdminLoggedIn) {
+                const id = 'additional_' + Date.now().toString();
+                data.additionalItems.push({ id, name, persons: [] });
+                input.value = '';
+                saveData();
+                showThankYouEffect();
+            }
+        }
+
+        document.getElementById('newItemInput').addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') addNewItem();
+        });
+
+        // Admin-Logik
+        function adminLogin() {
+            const password = document.getElementById('adminPassword').value;
+            if (password === "tojomajo") {
+                isAdminLoggedIn = true;
+                document.getElementById('adminLogin').style.display = 'none';
+                document.getElementById('adminControls').style.display = 'block';
+                document.getElementById('exportSection').style.display = 'block';
+                document.getElementById('testApiBtn').onclick = connectToFirebase;
+                alert("Yes Daddy, CUM IN ME 💦");
+            } else {
+                alert('Falsches Passwort!');
+            }
+        }
+
+        function adminLogout() {
+            isAdminLoggedIn = false;
+            document.getElementById('adminControls').style.display = 'none';
+            document.getElementById('adminLogin').style.display = 'block';
+            document.getElementById('exportSection').style.display = 'none';
+        }
+
+        // Firebase-Verbindung herstellen
+        function connectToFirebase() {
+            if (!app) {
+                initializeFirebase();
+                const status = document.querySelector('.drive-status');
+                status.className = 'drive-status connected';
+                status.innerHTML = '<span class="status-text">Verbunden mit Firebase</span>';
+            }
+        }
+
+        // Export-Funktionen
+        function exportToCSV() {
+            let csv = "Kategorie,Beitrag,Personen\n";
+            data.items.forEach(item => {
+                csv += `Benötigt,"${item.name || ''}","${(item.persons || []).join(';')}"\n`;
+            });
+            data.additionalItems.forEach(item => {
+                csv += `Zusätzlich,"${item.name || ''}","${(item.persons || []).join(';')}"\n`;
+            });
+            const link = document.createElement('a');
+            link.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv);
+            link.download = 'partybeiträge.csv';
+            link.click();
+        }
+
+        function exportToExcel() {
+            let csv = "Kategorie,Beitrag,Personen\n";
+            data.items.forEach(item => {
+                csv += `Benötigt,"${item.name || ''}","${(item.persons || []).join(';')}"\n`;
+            });
+            data.additionalItems.forEach(item => {
+                csv += `Zusätzlich,"${item.name || ''}","${(item.persons || []).join(';')}"\n`;
+            });
+            const uri = 'data:application/vnd.ms-excel,' + encodeURIComponent(csv);
+            const link = document.createElement('a');
+            link.href = uri;
+            link.download = 'partybeiträge.xls';
+            link.click();
+        }
+
+        function generateNewBin() {
+            const newBin = 'BIN_' + Math.random().toString(36).substr(2, 9).toUpperCase();
+            alert('Neuer BIN generiert: ' + newBin);
+        }
+
+        // Danke- und Abschiedseffekte
+        const thankYouMessages = [
+            "🙏 Daaaaaankööö! 🙏",
+            "💕 Du bist die/der Geilste! 💕",
+            "💣 Hammer-fett-bomben-krass! 💣",
+            "🥰 Echt?! Thnx!!! 🥰",
+            "🛟 Du bist die Rettung 🛟",
+            "❤️ Ich hasse alle: Außer DICH! ❤️",
+            "❤️‍🔥 Wir lieben Dich! ❤️‍🔥"
+        ];
+        const goodbyeReactions = [
+            "👋 Schade, vielleicht was anderes?!",
+            "💔 Wir werden deinen Beitrag vermissen!",
+            "🫡 Verstanden, abgemeldet.",
+            "😥 Komm bald wieder!",
+            "💨 Tschüssikowski!",
+            "👋 Bleib sauber!",
+            "🫡 Bis bald, Cowboy!"
+        ];
+
+        function showThankYouEffect() {
+            if (!isAdminLoggedIn) {
+                const overlay = document.getElementById('thankYouOverlay');
+                const text = document.getElementById('thankYouText');
+                const subtext = document.getElementById('thankYouSubtext');
+                const randomIndex = Math.floor(Math.random() * thankYouMessages.length);
+                text.textContent = thankYouMessages[randomIndex];
+                subtext.textContent = "";
+                overlay.classList.add('show');
+                setTimeout(() => overlay.classList.remove('show'), 4000);
+
+                // Radiale Laserstrahlen hinzufügen
+                const laserLines = document.querySelector('.laser-lines');
+                laserLines.innerHTML = '';
+                for (let i = 0; i < 8; i++) {
+                    const laser = document.createElement('div');
+                    laser.className = 'radial-laser';
+                    laser.style.transformOrigin = 'center';
+                    laser.style.left = '50%';
+                    laser.style.top = '50%';
+                    laser.style.animationDelay = `${i * 0.25}s`;
+                    laserLines.appendChild(laser);
+                    setTimeout(() => laser.remove(), 4000);
+                }
+
+                for (let i = 0; i < 30; i++) {
+                    const particle = document.createElement('div');
+                    particle.className = 'particle';
+                    particle.style.left = Math.random() * 100 + 'vw';
+                    particle.style.top = Math.random() * 100 + 'vh';
+                    particle.style.animationDelay = Math.random() * 2 + 's';
+                    document.body.appendChild(particle);
+                    setTimeout(() => particle.remove(), 4000);
+                }
+            }
+        }
+
+        function showGoodbyeEffect() {
+            if (!isAdminLoggedIn) {
+                const overlay = document.getElementById('thankYouOverlay');
+                const text = document.getElementById('thankYouText');
+                const subtext = document.getElementById('thankYouSubtext');
+                const randomIndex = Math.floor(Math.random() * goodbyeReactions.length);
+                text.textContent = goodbyeReactions[randomIndex];
+                subtext.textContent = "";
+                overlay.classList.add('show');
+                setTimeout(() => overlay.classList.remove('show'), 4000);
+
+                for (let i = 0; i < 15; i++) {
+                    const particle = document.createElement('div');
+                    particle.className = 'particle particle-orange';
+                    particle.style.left = Math.random() * 100 + 'vw';
+                    particle.style.top = Math.random() * 100 + 'vh';
+                    particle.style.animationDelay = Math.random() * 2 + 's';
+                    document.body.appendChild(particle);
+                    setTimeout(() => particle.remove(), 4000);
+                }
+            }
+        }
+
+        // Sterne und Neon-Linien erzeugen
+        function createStars() {
+            const stars = document.querySelector('.stars');
+            for (let i = 0; i < 100; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.top = `${Math.random() * 100}%`;
+                star.style.left = `${Math.random() * 100}%`;
+                star.style.animationDelay = `${Math.random() * 2}s`;
+                stars.appendChild(star);
+            }
+        }
+
+        function createNeonLines() {
+            const lines = document.querySelector('.neon-lines');
+            for (let i = 0; i < 5; i++) {
+                const line = document.createElement('div');
+                line.className = 'neon-line';
+                line.style.top = `${Math.random() * 100}%`;
+                line.style.animationDelay = `${Math.random() * 2}s`;
+                lines.appendChild(line);
+            }
+        }
+
+        // Initialisierung
+        document.addEventListener('DOMContentLoaded', () => {
+            createStars();
+            createNeonLines();
+            initializeFirebase();
+            firebase.database().ref('.info/connected').on('value', (snap) => {
+                const status = document.querySelector('.drive-status');
+                status.className = 'drive-status' + (snap.val() ? ' connected' : ' disconnected');
+                status.innerHTML = `<span class="status-text">${snap.val() ? 'Verbunden mit Firebase' : 'Lokaler Modus - Funktioniert ohne Internet'}</span><br/><button class="connect-btn" onclick="connectToFirebase()">👆 Für Synchronisation: Admin → "🔗 Test API" klicken</button>`;
+            });
+        });
+    </script>
+    <style>
+        /* CSS für Partikel-Effekte */
+        .particle {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            background: #00ffff;
+            border-radius: 50%;
+            pointer-events: none;
+            animation: particle-float 4s ease-out forwards;
+        }
+        .particle:nth-child(odd) { background: #ff00ff; animation-delay: 0.1s; }
+        .particle:nth-child(3n) { background: #ffffff; animation-delay: 0.2s; }
+        .particle-orange { background: #ffaa00; }
+        .particle-orange:nth-child(odd) { background: #ff6600; }
+        @keyframes particle-float {
+            0% { opacity: 1; transform: translateY(0) scale(1); }
+            100% { opacity: 0; transform: translateY(-50px) scale(0.5); }
+        }
+    </style>
+</body>
+</html>
+```
